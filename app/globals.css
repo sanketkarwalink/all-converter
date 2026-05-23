@@ -1,26 +1,153 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #fdf8f3;
+  --foreground: #1c1613;
+  --surface: #ffffff;
+  --border: #ebe5df;
+  --muted: #8c7f76;
+  --primary: #6366f1;
+  --primary-hover: #4f46e5;
+  --accent: #f59e0b;
+  --success: #059669;
+  --warm-glow: rgba(99, 102, 241, 0.08);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0f0d0b;
+    --foreground: #f5f0eb;
+    --surface: #1a1614;
+    --border: #2d2824;
+    --muted: #9c8f85;
+    --primary: #818cf8;
+    --primary-hover: #6366f1;
+    --accent: #fbbf24;
+    --success: #34d399;
+    --warm-glow: rgba(129, 140, 248, 0.12);
+  }
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-surface: var(--surface);
+  --color-border: var(--border);
+  --color-muted: var(--muted);
+  --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
+  --color-accent: var(--accent);
+  --color-success: var(--success);
+  --font-sans: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  --animate-fade-in: fade-in 0.4s ease-out;
+  --animate-slide-up: slide-up 0.35s ease-out;
+  --animate-slide-in-right: slide-in-right 0.3s ease-out;
+  --animate-scale-in: scale-in 0.2s ease-out;
+  --animate-bounce-in: bounce-in 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  --animate-pulse-glow: pulse-glow 2s ease-in-out infinite;
+  --animate-shimmer: shimmer 2s linear infinite;
+  --animate-check: check 0.3s ease-out;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slide-up {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slide-in-right {
+  from { opacity: 0; transform: translateX(100%); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes scale-in {
+  from { opacity: 0; transform: scale(0.9); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes bounce-in {
+  0% { opacity: 0; transform: scale(0.3); }
+  50% { transform: scale(1.08); }
+  70% { transform: scale(0.95); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 8px var(--warm-glow); }
+  50% { box-shadow: 0 0 20px var(--warm-glow); }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+@keyframes check {
+  0% { transform: scale(0); opacity: 0; }
+  50% { transform: scale(1.3); }
+  100% { transform: scale(1); opacity: 1; }
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+}
+
+.textarea-base {
+  @apply w-full p-4 border border-zinc-200 dark:border-zinc-800 rounded-xl bg-white dark:bg-zinc-900 font-mono text-sm resize-y transition-all;
+  &:focus {
+    @apply ring-2 ring-indigo-500/30 border-indigo-400 outline-none shadow-sm;
+  }
+}
+
+.input-base {
+  @apply px-4 py-2.5 border border-zinc-300 dark:border-zinc-700 rounded-xl bg-zinc-50 dark:bg-zinc-800 text-sm transition-all shadow-sm;
+  &:focus {
+    @apply ring-2 ring-indigo-500/30 border-indigo-400 outline-none bg-white dark:bg-zinc-900;
+  }
+}
+
+.output-base {
+  @apply w-full p-4 border border-zinc-200 dark:border-zinc-800 rounded-xl bg-zinc-50 dark:bg-zinc-800/50 font-mono text-sm resize-y;
+}
+
+.btn-primary {
+  @apply px-6 py-2.5 bg-indigo-600 text-white font-medium rounded-xl shadow-sm hover:bg-indigo-700 hover:shadow-md active:scale-[0.97] transition-all disabled:opacity-50 disabled:cursor-not-allowed;
+}
+
+.btn-success {
+  @apply px-4 py-2 bg-emerald-600 text-white rounded-xl hover:bg-emerald-700 active:scale-[0.97] transition-all text-sm font-medium shadow-sm;
+}
+
+.btn-ghost {
+  @apply px-4 py-2 border border-zinc-300 dark:border-zinc-700 rounded-xl text-sm font-medium hover:bg-zinc-100 dark:hover:bg-zinc-800 active:scale-[0.97] transition-all;
+}
+
+.tab-btn {
+  @apply px-5 py-2 rounded-lg text-sm font-medium transition-all;
+}
+
+.tab-btn-active {
+  @apply bg-indigo-600 text-white shadow-sm;
+}
+
+.tab-btn-inactive {
+  @apply bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-200 dark:hover:bg-zinc-700;
+}
+
+.success-check {
+  animation: check 0.3s ease-out;
+}
+
+.card-hover {
+  @apply transition-all duration-200;
+}
+
+.card-hover:hover {
+  @apply -translate-y-0.5 shadow-lg;
 }

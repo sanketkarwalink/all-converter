@@ -57,14 +57,14 @@ export function Header() {
   }, []);
 
   return (
-    <header className="sticky top-0 z-40 border-b border-zinc-200 dark:border-zinc-800 bg-white/80 dark:bg-zinc-900/80 backdrop-blur-md">
+    <header className="sticky top-0 z-40 border-b border-zinc-200/50 dark:border-zinc-800/50 bg-white/70 dark:bg-zinc-950/70 backdrop-blur-lg">
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         <div className="flex h-16 items-center justify-between gap-4">
           <Link href="/" className="flex items-center gap-2.5 shrink-0 group">
-            <span className="flex items-center justify-center w-9 h-9 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 text-white text-lg font-bold shadow-sm transition-transform duration-200 group-hover:scale-105">
+            <span className="flex items-center justify-center w-8 h-8 rounded-lg bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 text-base font-bold font-display shadow-sm transition-all duration-200 group-hover:scale-105">
               A
             </span>
-            <span className="text-lg font-bold text-zinc-800 dark:text-zinc-100 hidden sm:inline">
+            <span className="text-base font-bold tracking-tight text-zinc-800 dark:text-zinc-100 hidden sm:inline transition-colors group-hover:text-indigo-600 dark:group-hover:text-indigo-400">
               All Converter
             </span>
           </Link>
@@ -74,7 +74,7 @@ export function Header() {
               <Link
                 key={key}
                 href={`/#${key}`}
-                className="px-3 py-2 rounded-lg text-sm font-medium text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-all"
+                className="px-3 py-1.5 rounded-lg text-sm font-medium text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100 transition-colors"
               >
                 {cat.label}
               </Link>
@@ -84,21 +84,21 @@ export function Header() {
           <div className="flex items-center gap-2">
             <button
               onClick={() => setSearchOpen(true)}
-              className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm text-zinc-500 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
+              className="flex items-center gap-2 px-3 py-1.5 rounded-xl text-sm text-zinc-500 dark:text-zinc-400 bg-zinc-100/50 dark:bg-zinc-900/50 border border-zinc-200/40 dark:border-zinc-800/40 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:border-zinc-300 dark:hover:border-zinc-700 transition-all duration-200 cursor-pointer"
               aria-label="Search converters"
             >
-              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <svg className="w-4 h-4 text-zinc-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
               </svg>
               <span className="hidden sm:inline text-xs">Search...</span>
-              <kbd className="hidden sm:inline-flex items-center px-1.5 py-0.5 rounded bg-zinc-100 dark:bg-zinc-800 text-[10px] font-medium text-zinc-400">
+              <kbd className="hidden sm:inline-flex items-center px-1.5 py-0.5 rounded bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 text-[9px] font-medium text-zinc-400 shadow-2xs">
                 ⌘K
               </kbd>
             </button>
 
             <button
               onClick={() => setMenuOpen(!menuOpen)}
-              className="md:hidden p-2 rounded-lg text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
+              className="md:hidden p-2 rounded-xl text-zinc-500 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-900 transition-colors cursor-pointer"
               aria-label="Toggle menu"
             >
               <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -114,13 +114,13 @@ export function Header() {
 
         {menuOpen && (
           <div className="md:hidden pb-4 animate-fade-in">
-            <div className="flex flex-col gap-1">
+            <div className="flex flex-col gap-1 border-t border-zinc-100 dark:border-zinc-900 pt-3">
               {Object.entries(categories).map(([key, cat]) => (
                 <Link
                   key={key}
                   href={`/#${key}`}
                   onClick={() => setMenuOpen(false)}
-                  className="px-3 py-2.5 rounded-lg text-sm font-medium text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
+                  className="px-3 py-2.5 rounded-xl text-sm font-medium text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100 hover:bg-zinc-50 dark:hover:bg-zinc-900 transition-colors"
                 >
                   {cat.label}
                 </Link>
@@ -131,9 +131,9 @@ export function Header() {
       </div>
 
       {searchOpen && (
-        <div className="absolute inset-x-0 top-0 border-b border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-lg animate-fade-in">
-          <div ref={searchContainerRef} className="mx-auto max-w-2xl px-4 py-4">
-            <div className="flex items-center gap-3 px-4 py-2.5 rounded-xl border border-zinc-300 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800/50 transition-all duration-200 focus-within:border-indigo-400 focus-within:ring-2 focus-within:ring-indigo-500/30">
+        <div className="fixed inset-0 z-50 bg-zinc-950/20 dark:bg-zinc-950/45 backdrop-blur-md flex justify-center items-start pt-[12vh] px-4 animate-fade-in">
+          <div ref={searchContainerRef} className="w-full max-w-2xl bg-white dark:bg-zinc-900 rounded-3xl border border-zinc-200/60 dark:border-zinc-800/60 shadow-2xl p-4 overflow-hidden animate-scale-in">
+            <div className="flex items-center gap-3 px-4 py-3 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-950/50 focus-within:ring-4 focus-within:ring-indigo-500/10 focus-within:border-indigo-500/50 transition-all duration-200">
               <svg className="w-5 h-5 text-zinc-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
               </svg>
@@ -147,27 +147,27 @@ export function Header() {
               />
               <button
                 onClick={closeSearch}
-                className="text-xs text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300 transition-colors"
+                className="text-xs font-semibold px-2.5 py-1 rounded-lg bg-zinc-100 dark:bg-zinc-800 text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300 transition-colors cursor-pointer"
               >
                 Esc
               </button>
             </div>
             {query && (
-              <div className="mt-2 max-h-80 overflow-y-auto rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-sm">
+              <div className="mt-4 max-h-80 overflow-y-auto rounded-2xl border border-zinc-100 dark:border-zinc-800/80 divide-y divide-zinc-100 dark:divide-zinc-800/80 bg-white dark:bg-zinc-900">
                 {filtered.length === 0 ? (
-                  <p className="p-4 text-sm text-zinc-500 text-center">No converters found</p>
+                  <p className="p-6 text-sm text-zinc-500 text-center">No converters found</p>
                 ) : (
                   filtered.map((c) => (
                     <Link
                       key={c.slug}
                       href={`/${c.slug}`}
                       onClick={closeSearch}
-                      className="flex items-center gap-3 px-4 py-3 hover:bg-indigo-50 dark:hover:bg-indigo-900/20 transition-colors"
+                      className="flex items-center gap-3.5 px-4 py-3.5 hover:bg-zinc-50 dark:hover:bg-zinc-800/30 transition-colors"
                     >
-                      <span className="text-xl">{c.icon}</span>
-                      <div>
-                        <p className="text-sm font-medium">{c.shortTitle}</p>
-                        <p className="text-xs text-zinc-500">{c.description}</p>
+                      <span className="text-2xl bg-zinc-50 dark:bg-zinc-800 w-10 h-10 rounded-xl flex items-center justify-center">{c.icon}</span>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-sm font-semibold text-zinc-800 dark:text-zinc-100">{c.shortTitle}</p>
+                        <p className="text-xs text-zinc-400 dark:text-zinc-500 truncate">{c.description}</p>
                       </div>
                     </Link>
                   ))

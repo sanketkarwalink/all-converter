@@ -66,64 +66,57 @@ export function FileDropZone({ accept, label, description, readAs = "text", load
       onDragLeave={() => setDragOver(false)}
       onDrop={handleDrop}
       onClick={handleContainerClick}
-      className="flex flex-col items-center justify-center gap-4 p-8 sm:p-12 rounded-2xl border-2 border-dashed cursor-pointer transition-all duration-300 select-none"
-      style={{
-        borderColor: dragOver
-          ? "rgb(99, 102, 241)"
+      className={`flex flex-col items-center justify-center gap-4 p-8 sm:p-12 rounded-3xl border border-dashed transition-all duration-300 select-none cursor-pointer outline-none ${
+        loading
+          ? "opacity-50 pointer-events-none"
+          : ""
+      } ${
+        dragOver
+          ? "border-indigo-500 bg-indigo-50/10 dark:bg-indigo-950/10 scale-[1.005]"
           : hasFile
-          ? "rgb(52, 211, 153)"
-          : "rgb(209, 204, 198)",
-        background: dragOver
-          ? "rgba(99, 102, 241, 0.06)"
-          : "transparent",
-        transform: dragOver ? "scale(1.01)" : "scale(1)",
-        opacity: loading ? 0.5 : 1,
-        pointerEvents: loading ? "none" : undefined,
-      }}
+          ? "border-emerald-500/50 bg-emerald-50/5 dark:bg-emerald-950/5"
+          : "border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-950/20 hover:border-zinc-300 dark:hover:border-zinc-700"
+      }`}
     >
       <div
-        className={`w-16 h-16 rounded-2xl flex items-center justify-center transition-all duration-300 ${
+        className={`w-12 h-12 rounded-2xl flex items-center justify-center transition-all duration-300 ${
           hasFile
-            ? "bg-emerald-100 dark:bg-emerald-900/30 animate-bounce-in"
+            ? "bg-emerald-100/50 dark:bg-emerald-900/30 text-emerald-500 success-check"
             : dragOver
-            ? "bg-indigo-100 dark:bg-indigo-900/30"
-            : "bg-indigo-100 dark:bg-indigo-900/30"
+            ? "bg-indigo-100/50 dark:bg-indigo-900/30 text-indigo-500"
+            : "bg-zinc-100 dark:bg-zinc-900 text-zinc-400 dark:text-zinc-500"
         }`}
       >
         {loading ? (
-          <svg className="animate-spin w-8 h-8 text-indigo-500" viewBox="0 0 24 24" fill="none">
+          <svg className="animate-spin w-5 h-5 text-indigo-500" viewBox="0 0 24 24" fill="none">
             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
             <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
           </svg>
         ) : hasFile ? (
-          <svg className="w-8 h-8 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-            <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-          </svg>
-        ) : dragOver ? (
-          <svg className="w-8 h-8 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-            <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" />
+          <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4" />
           </svg>
         ) : (
-          <svg className="w-8 h-8 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+          <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" />
           </svg>
         )}
       </div>
       <div className="text-center">
-        <p className={`font-medium transition-colors duration-300 ${
+        <p className={`text-sm font-semibold transition-colors duration-300 ${
           hasFile ? "text-emerald-600 dark:text-emerald-400" : "text-zinc-700 dark:text-zinc-300"
         }`}>
           {loading ? "Processing..." : hasFile ? "File loaded!" : label}
         </p>
-        <p className="text-sm text-zinc-500 mt-1">
+        <p className="text-xs text-zinc-400 dark:text-zinc-500 mt-1">
           {description || `Click to browse or drag & drop`}
         </p>
-        <p className="text-xs text-zinc-400 mt-3 flex items-center justify-center gap-1">
-          <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+        <div className="text-[10px] text-zinc-400 dark:text-zinc-500 mt-3 flex items-center justify-center gap-1.5 font-medium">
+          <svg className="w-3.5 h-3.5 text-zinc-400/80" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
           </svg>
           Your file stays on your device — nothing is uploaded
-        </p>
+        </div>
       </div>
       <input
         ref={inputRef}

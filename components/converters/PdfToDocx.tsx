@@ -2,6 +2,7 @@
 
 import { useState, useCallback, useRef, useEffect } from "react";
 import * as pdfjs from "pdfjs-dist";
+import type { TextItem } from "pdfjs-dist/types/src/display/api";
 import { createWorker } from "tesseract.js";
 import { Document, Packer, Paragraph, TextRun, AlignmentType } from "docx";
 import { FileDropZone } from "../FileDropZone";
@@ -52,7 +53,8 @@ export function PdfToDocx() {
           const page = await pdf.getPage(i);
           const textContent = await page.getTextContent();
           const text = textContent.items
-            .map((item: any) => item.str)
+            .filter((item): item is TextItem => "str" in item)
+            .map((item) => item.str)
             .join(" ");
           textPages.push(text);
         }

@@ -97,7 +97,7 @@ export function MarkdownToPdf() {
       const pdfW = 190;
       const pdfH = (canvas.height * pdfW) / canvas.width;
       const pageH = 277;
-      let remaining = pdfH;
+      const remaining = pdfH;
 
       const singlePage = pdfH <= pageH;
       if (singlePage) {

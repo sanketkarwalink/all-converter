@@ -42,8 +42,8 @@ export default function Home() {
     <div className="animate-fade-in">
       <section className="relative overflow-hidden bg-gradient-to-br from-indigo-600 via-indigo-700 to-purple-900 text-white">
         <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.04)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.04)_1px,transparent_1px)] bg-[size:40px_40px]" />
-        <div className="absolute top-20 left-1/4 w-96 h-96 bg-amber-500/10 rounded-full blur-3xl" />
-        <div className="absolute bottom-10 right-1/4 w-64 h-64 bg-pink-500/10 rounded-full blur-3xl" />
+        <div className="hidden sm:block absolute top-20 left-1/4 w-96 h-96 bg-amber-500/10 rounded-full blur-3xl" />
+        <div className="hidden sm:block absolute bottom-10 right-1/4 w-64 h-64 bg-pink-500/10 rounded-full blur-3xl" />
         <div className="relative mx-auto max-w-4xl px-4 sm:px-6 py-20 sm:py-28 text-center">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 text-sm text-white/80 mb-6 backdrop-blur-sm border border-white/10 animate-fade-in">
             <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />

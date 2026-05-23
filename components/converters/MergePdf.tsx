@@ -97,7 +97,7 @@ export function MergePdf() {
         onDragOver={(e) => e.preventDefault()}
         onDrop={handleDrop}
         onClick={() => inputRef.current?.click()}
-        className="flex flex-col items-center justify-center gap-4 p-12 rounded-2xl border-2 border-dashed border-zinc-300 dark:border-zinc-700 cursor-pointer hover:border-indigo-400 transition-colors"
+        className="flex flex-col items-center justify-center gap-4 p-8 sm:p-12 rounded-2xl border-2 border-dashed border-zinc-300 dark:border-zinc-700 cursor-pointer hover:border-indigo-400 transition-colors"
       >
         <div className="w-16 h-16 rounded-2xl bg-indigo-100 dark:bg-indigo-900/30 flex items-center justify-center">
           <svg className="w-8 h-8 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>

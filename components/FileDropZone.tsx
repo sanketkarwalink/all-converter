@@ -66,7 +66,7 @@ export function FileDropZone({ accept, label, description, readAs = "text", load
       onDragLeave={() => setDragOver(false)}
       onDrop={handleDrop}
       onClick={handleContainerClick}
-      className="flex flex-col items-center justify-center gap-4 p-12 rounded-2xl border-2 border-dashed cursor-pointer transition-all duration-300 select-none"
+      className="flex flex-col items-center justify-center gap-4 p-8 sm:p-12 rounded-2xl border-2 border-dashed cursor-pointer transition-all duration-300 select-none"
       style={{
         borderColor: dragOver
           ? "rgb(99, 102, 241)"

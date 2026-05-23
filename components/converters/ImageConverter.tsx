@@ -21,7 +21,9 @@ export function ImageConverter() {
   const [file, setFile] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
   const [format, setFormat] = useState(FORMATS[0]);
+  const [quality, setQuality] = useState(0.8);
   const [convertedUrl, setConvertedUrl] = useState<string | null>(null);
+  const [convertedSize, setConvertedSize] = useState<number | null>(null);
   const [loading, setLoading] = useState(false);
   const [dragOver, setDragOver] = useState(false);
   const [dimensions, setDimensions] = useState<{ w: number; h: number } | null>(null);
@@ -72,12 +74,14 @@ export function ImageConverter() {
     if (!imgRef.current || !canvasRef.current) return;
     setLoading(true);
     try {
-      const blob = await new Promise<Blob | null>((resolve) =>
-        canvasRef.current!.toBlob(resolve, format.value, 0.92)
-      );
+      const blob = await new Promise<Blob | null>((resolve) => {
+        const q = format.value === "image/png" || format.value === "image/bmp" ? undefined : quality;
+        canvasRef.current!.toBlob(resolve, format.value, q);
+      });
       if (!blob) throw new Error("Conversion failed");
       const url = URL.createObjectURL(blob);
       setConvertedUrl(url);
+      setConvertedSize(blob.size);
       toast(`Converted to ${format.label}!`, "success");
     } catch {
       toast("Conversion failed. Please try again.", "error");
@@ -89,7 +93,9 @@ export function ImageConverter() {
     setFile(null);
     setPreview(null);
     setConvertedUrl(null);
+    setConvertedSize(null);
     setDimensions(null);
+    setQuality(0.8);
     imgRef.current = null;
   }, []);
 
@@ -156,8 +162,8 @@ export function ImageConverter() {
             </button>
           </div>
 
-          <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-end">
-            <div className="space-y-2 flex-1">
+          <div className="flex flex-col gap-4">
+            <div className="space-y-2">
               <label className="text-sm font-medium text-zinc-600 dark:text-zinc-400">
                 Output Format
               </label>
@@ -177,10 +183,49 @@ export function ImageConverter() {
                 ))}
               </div>
             </div>
+
+            {(format.value === "image/jpeg" || format.value === "image/webp") && (
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-zinc-600 dark:text-zinc-400">
+                  Quality: {Math.round(quality * 100)}%
+                </label>
+                <input
+                  type="range"
+                  min="0.1"
+                  max="1"
+                  step="0.05"
+                  value={quality}
+                  onChange={(e) => setQuality(parseFloat(e.target.value))}
+                  className="w-full max-w-xs accent-indigo-600"
+                />
+                <p className="text-xs text-zinc-400">
+                  Lower = smaller file, higher = better quality
+                </p>
+              </div>
+            )}
+
+            {(format.value === "image/png") && (
+              <p className="text-xs text-amber-600 dark:text-amber-400 flex items-center gap-1">
+                <svg className="w-3.5 h-3.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
+                </svg>
+                PNG is lossless — file will be larger than JPEG/WebP
+              </p>
+            )}
+
+            {format.value === "image/bmp" && (
+              <p className="text-xs text-red-600 dark:text-red-400 flex items-center gap-1">
+                <svg className="w-3.5 h-3.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
+                </svg>
+                BMP is uncompressed — file size will be significantly larger
+              </p>
+            )}
+
             <button
               onClick={convert}
               disabled={loading}
-              className="btn-primary flex items-center gap-2"
+              className="btn-primary flex items-center gap-2 self-start"
             >
               {loading ? (
                 <>
@@ -203,20 +248,30 @@ export function ImageConverter() {
         </div>
       )}
 
-      {convertedUrl && (
+      {convertedUrl && convertedSize !== null && (
         <div className="flex items-center justify-between p-4 rounded-xl bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800 animate-slide-up">
-          <div className="flex items-center gap-2">
-            <svg className="w-5 h-5 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+          <div className="flex items-center gap-3">
+            <svg className="w-5 h-5 text-emerald-600 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
-            <span className="text-sm font-medium text-emerald-800 dark:text-emerald-200">
-              Converted to {format.label}
-            </span>
+            <div>
+              <span className="text-sm font-medium text-emerald-800 dark:text-emerald-200">
+                Converted to {format.label}
+              </span>
+              <p className="text-xs text-emerald-600 dark:text-emerald-400">
+                {(file!.size / 1024).toFixed(1)} KB → {(convertedSize / 1024).toFixed(1)} KB
+                {convertedSize > file!.size && (
+                  <span className="text-amber-600 dark:text-amber-400 ml-1">
+                    ({(convertedSize / file!.size * 100 - 100).toFixed(0)}% larger)
+                  </span>
+                )}
+              </p>
+            </div>
           </div>
           <a
             href={convertedUrl}
             download={`converted.${format.ext}`}
-            className="btn-success flex items-center gap-2"
+            className="btn-success flex items-center gap-2 shrink-0"
           >
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
